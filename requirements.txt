@@ -1,0 +1,4 @@
+pandas
+pyodbc
+selenium
+webdriver-manager
