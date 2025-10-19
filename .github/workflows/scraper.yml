@@ -2,7 +2,7 @@ name: Run Daily Scraper
 
 on:
   schedule:
-    - cron: '0 12 * * 1-5'  # 5 PM PKT (Monday–Friday)
+    - cron: '0 12 * * 1-5'  # 5 PM PKT = 12 PM UTC (Monday–Friday)
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -27,12 +29,9 @@ jobs:
         run: python scraper.py
 
       - name: Commit and push updated Excel
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config --global user.name "AhmedRaza-Automation"
           git config --global user.email "ahmedraza@example.com"
           git add PSX_DailyActivity.xlsx || echo "No file to add"
           git commit -m "Auto update: PSX data $(date)" || echo "Nothing to commit"
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
-          git push origin HEAD:main
+          git push
