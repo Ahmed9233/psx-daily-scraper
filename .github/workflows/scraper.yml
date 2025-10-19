@@ -27,9 +27,11 @@ jobs:
         run: python scraper.py
 
       - name: Commit and push updated Excel
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config --global user.name "AhmedRaza-Automation"
           git config --global user.email "ahmedraza@example.com"
           git add PSX_DailyActivity.xlsx || echo "No changes to commit"
           git commit -m "Auto update: PSX data $(date)" || echo "Nothing to commit"
-          git push
+          git push https://Ahmed92323:${GH_TOKEN}@github.com/Ahmed92323/psx-daily-scraper.git HEAD:main
