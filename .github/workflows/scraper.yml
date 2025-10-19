@@ -2,7 +2,7 @@ name: Run Daily Scraper
 
 on:
   schedule:
-    - cron: '0 12 * * 1-5'  # 5 PM PKT = 12 PM UTC, Monday-Friday
+    - cron: '0 12 * * 1-5'  # 5 PM PKT (Monday–Friday)
   workflow_dispatch:
 
 jobs:
@@ -32,6 +32,7 @@ jobs:
         run: |
           git config --global user.name "AhmedRaza-Automation"
           git config --global user.email "ahmedraza@example.com"
-          git add PSX_DailyActivity.xlsx || echo "No changes to commit"
+          git add PSX_DailyActivity.xlsx || echo "No file to add"
           git commit -m "Auto update: PSX data $(date)" || echo "Nothing to commit"
-          git push https://Ahmed92323:${GH_TOKEN}@github.com/Ahmed92323/psx-daily-scraper.git HEAD:main
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
+          git push origin HEAD:main
